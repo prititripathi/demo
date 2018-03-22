@@ -1,0 +1,378 @@
+﻿Date.now = Date.now || function() { return +new Date; };
+(function($) {
+  $(document).ready(function(){
+
+  // for debug purpose
+  function dump(input) {
+    console.log(input);
+  }
+
+  function callBxSlider(selector){
+    var oneSlider = ($('.bxslider').children().length < 4);
+
+/*  $('.bxslider').bxSlider({
+    auto: (!oneSlider),
+    pager: (!oneSlider),
+  });  */
+
+if(selector == '#bxslider') {
+  $(selector).bxSlider({
+    controls: false,
+    auto: true,
+    minSlides: 1,
+    maxSlides: 1,
+    autoDelay: 5,
+    easing: 'easeInQuart',
+    mode: 'horizontal',
+    responsive:true,
+    useCSS: true,
+    speed: 800,
+    infiniteLoop: true
+  });
+} else {
+  $(selector).bxSlider({
+    adaptiveHeight: true,
+    controls: false,
+    responsive:true,
+    minSlides: 1,
+    maxSlides: 1,
+    autoDelay: 5,
+    easing: 'easeInQuart',
+    mode: 'horizontal',
+    useCSS: true,
+    speed: 800,
+    infiniteLoop: false
+        //easing : 'easeInOutCirc'
+      });
+}
+}
+
+  // initialization of count down timer
+  function countDownStart(ID, deadline, clockFace){
+
+    if(typeof clockFace == 'undefined') {
+      clockFace = 'DailyCounter';
+    }
+
+    var time = deadline,
+    clock,
+    date = new Date(time[0], time[1], time[2], time[3], time[4]),
+    fromNow = Math.floor(date.getTime() / 1000) - Math.floor(Date.now() / 1000);
+
+    if(fromNow > 0){
+      clock = $(ID).FlipClock({
+        clockFace: clockFace,
+              //clockFace: 'HourlyCounter'
+              autoStart: false,
+              callbacks: {
+                stop: function() {
+                  $(ID + 'msg').html('The clock has stopped!')
+                }
+              }
+            });
+
+      clock.setTime(fromNow);
+      clock.setCountdown(true);
+      clock.start();
+    } else {
+      $(ID + 'msg').html('<p>The clock has stopped!</p>');
+    }
+
+  }
+
+  // infoset3 masonry slider function
+  function infoset3slider(slides, selector){
+    var markup = '';
+
+    for (var i = 0; i < slides.length; i++) {
+      markup = markup + '<div class="slide"><img src="' + slides[i].bg + '"><div class="overlay"><div class="caption"><h4>' + slides[i].title + '</h4><p>' + slides[i].description + '</p></div></div></div>';
+    }
+    markup = '<div class="bxslider">' + markup + '</div>';
+    $(selector).html(markup);
+
+    callBxSlider(selector + ' .bxslider');
+  }
+
+
+  // smothscroll
+  $('a[href^="#"].scroll').on('click',function (e) {
+  	e.preventDefault();
+  	$('html, body').stop().animate({
+  		'scrollTop': jQuery(jQuery(this).attr('href')).offset().top
+    }, 500, 'swing', function () {});
+  });
+  // smothscroll
+
+  var xmldata = $.ajax({
+    type: 'GET',
+    url: '/in/iwov-resources/splitter/data.xml',
+    dataType: 'xml',
+    error: function() {
+      alert("The XML File could not be processed correctly.");
+    }
+  });
+
+  xmldata.done(function(data){
+    $(data).find('banner').each(function(){
+      var title = $(this).find('title').text(),
+      subtitle = $(this).find('subtitle').text(),
+      button_label = $(this).find('button_label').text(),
+      link = $(this).find('link').text(),
+      bg = $(this).find('bg').text(),
+      color = $(this).find('color').text(),
+      style = '';
+
+      if(color=='white'){
+       style = ' style="color: #fff; text-shadow: none;"';
+     }
+
+     markup = '<img src="' + bg +'"><div class="carousel-caption"><h2' + style + '>'+ title +'</h2><p' + style + '>' + subtitle + '</p><a href="' + link + '" class="btn btn-default">' + button_label + '</a></div>';
+
+     $('<li></li>').html( markup ).appendTo("#bxslider");
+   });
+    callBxSlider('#bxslider');
+
+    // Parsing by converting to JSON
+    var jsondata = $.xml2json(data);
+
+    //var infoset1 = jsondata.infoset1.order;
+
+    function multiSlides(slide){ // return data of one slide in a multi slide set up
+      markup  = '';
+      for (var j = 0; j < slide.item.length; j++) {
+        var thumb = '';
+        var captionClass = 'caption';
+        var category = '';
+
+        if(slide.item[j].category){
+         category = '<div class="article-category">' + slide.item[j].category + '</div>';
+       }
+       if(slide.item[j].thumb) {
+        thumb = '<img class="thumb" src="' + slide.item[j].thumb + '">';
+        captionClass = 'caption caption-thumb';
+      }
+      if(slide.item[j].link){
+       markup = markup + '<div class="item linked"><a href="' + slide.item[j].link + '" target="_blank">' + category + '<div class="' + captionClass + '">' + '<h4>' + slide.item[j].title +'</h4>'+ thumb  + '<p>' + slide.item[j].description + '</p></div></a></div>';
+     }
+     else{
+       markup = markup + '<div class="item">' + category + '<div class="' + captionClass + '">' + '<h4>' + slide.item[j].title +'</h4>'+ thumb  + '<p>' + slide.item[j].description + '</p></div></div>';
+     }
+   }
+   return markup;
+ }
+
+	function singleSlide(items){ // return data in a single slide
+    markup  = '';
+    for (var j = 0; j < items.length; j++) {
+      var thumb = '';
+      var captionClass = 'caption';
+      var category = '';
+
+      if (items[j].category){
+       category = '<div class="article-category">' + items[j].category + '</div>';
+     }
+     if(items[j].thumb) {
+      thumb = '<img class="thumb" src="' + items[j].thumb + '">';
+      captionClass = 'caption caption-thumb';
+    }
+    if(items[j].link){
+     markup = markup + '<div class="item linked"><a href="' + items[j].link + '" target="_blank">' + category + '<div class="' + captionClass + '">'  + '<h4>' + items[j].title + '</h4>'+ thumb + '<p>' + items[j].description + '</p></div></a></div>';
+   }
+   else{
+     markup = markup + '<div class="item">' + category + '<div class="' + captionClass + '">'  + '<h4>' + items[j].title + '</h4>'+ thumb + '<p>' + items[j].description + '</p></div></div>';
+   }
+ }
+ return markup;
+
+}
+
+
+    /*
+      From Here Dynamic Section Creation Started
+      */
+      var builderData = jsondata.section_builder.section;
+      var builderDataSingle = false;
+
+      if (!builderData.length){
+        builderData = jsondata.section_builder.section.element;
+        builderDataSingle = true;
+      }
+
+      function sectionElement(data){
+        var elementMarkup = '';
+
+        for (var i = 0; i < data.length; i++) {
+        var element = data[i]; // element type
+		//console.log('checking element type: '+element.type);
+
+        /*
+        ALL POSSIBLE TYPES
+        ==================
+          - article-listing
+          - thumb-text
+          - featured-single
+          - featured-double
+          - menu
+          */
+
+          if(element.type == 'article-listing') {
+          // elementMarkup += element.type;
+          var articleListingData = jsondata.elements['element' + element.id];
+
+          var title = articleListingData.title,
+          slides = articleListingData.slide,
+          slidemarkup = '';
+          var items;
+			//console.log('creating article-listing, title: '+title);
+     if(!slides.length){
+      console.log('number of slides:'+slides.length);
+      items = articleListingData.slide.item;
+				//console.log('slides is undefined, creating items');
+				//console.log('number of wtf: '+items.length);
+				//console.dir(items);
+				slidemarkup = '<li>' + singleSlide(items) + '</li>';
+        //console.log(singleSlide(items));
+     }
+     else{
+				//console.dir(slides);
+				//console.log('number of pages: '+slides.length);
+				for (var j = 0; j < slides.length; j++) {
+					var slide = slides[j].item;
+					slidemarkup += '<li>' + multiSlides(slides[j]) + '</li>';
+				}
+     }
+      
+     elementMarkup += '<div class="col4 info info2 no-padding"><div class="info-inner"><h3>' + title + '</h3><ul class="bxslider">' + slidemarkup + '</ul></div></div>';
+   }
+
+   else if(element.type == 'thumb-text') {
+          //elementMarkup += element.type + element.id;
+		  //console.log('creating thumb-text');
+      var thumbTextData = jsondata.elements['element' + element.id].row,
+      thumbTextMarkup = '';
+
+      for (var i = 0; i < thumbTextData.length; i++) {
+       if(thumbTextData[i].link){
+        thumbTextMarkup += '<div class="item linked thumb-text-item"><a href="' + thumbTextData[i].link + '" target="_blank"><div class="thumb"><img src="' + thumbTextData[i].thumb + '" alt=""></div><div class="caption caption-thumb"><h4><strong>' + thumbTextData[i].title + '</strong></h4><p>' + thumbTextData[i].description + '</p></div></a></div>';
+      }
+      else{
+        thumbTextMarkup += '<div class="item thumb-text-item"><div class="thumb"><img src="' + thumbTextData[i].thumb + '" alt=""></div><div class="caption caption-thumb"><h4><strong>' + thumbTextData[i].title + '</strong></h4><p>' + thumbTextData[i].description + '</p></div></div>';
+      }
+    }
+
+    elementMarkup += '<div class="col8 info info4">' + thumbTextMarkup + '</div>';
+  }
+
+  else if(element.type == 'featured-single') {
+          //elementMarkup += element.type + element.id;
+		  //console.log('creating featured-single');
+      var featuredSingleData = jsondata.elements['element' + element.id],
+      featuredSingleMarkup = '';
+      if(featuredSingleData.link){
+        featuredSingleMarkup += '<div class="grid single"><img src="' + featuredSingleData.bg + '" alt=""><div class="overlay"><div class="caption"><h4>' + featuredSingleData.title + '</h4><p>' + featuredSingleData.description + '</p></div></div></div>';
+      }
+      else{
+        featuredSingleMarkup += '<div class="grid single"><img src="' + featuredSingleData.bg + '" alt=""><div class="overlay"><div class="caption"><h4>' + featuredSingleData.title + '</h4><p>' + featuredSingleData.description + '</p></div></div></div>';
+      }
+      elementMarkup += '<div class="col8 info masonry">' + featuredSingleMarkup + '</div>';
+    }
+
+    else if(element.type == 'featured-double') {
+          //elementMarkup += element.type + element.id;
+		  //console.log('creating featured-double');
+      var featuredDoubleData = jsondata.elements['element' + element.id].slide,
+      featuredDoubleMarkup = '';
+
+      for (var k = 0; k < featuredDoubleData.length; k++) {
+        featuredDoubleMarkup += '<div class="slide"><img src="' + featuredDoubleData[k].bg + '"><div class="overlay"><div class="caption"><h4>' + featuredDoubleData[k].title + '</h4><p>' + featuredDoubleData[k].description + '</p></div></div></div>';
+      }
+
+      elementMarkup += '<div class="col4 info masonry"><div class="grid double"><div class="bxslider">' + featuredDoubleMarkup + '</div></div></div>';
+    }
+
+    else if(element.type == 'menu') {
+     var tempmenu = $('#menu-template').html();
+     $('#menu-template').empty();
+     elementMarkup += tempmenu;
+   }
+ }
+ return elementMarkup;
+
+}
+
+    /*
+      This loop is appending data to
+      the dynamic section wrapper called "dynamic section"
+      */
+
+      if (builderDataSingle){
+        var blockMarkup = '';
+        blockMarkup = sectionElement(builderData);
+        $('#dynamic-sections .container-custom-sections').append('<div class="infos section">' + blockMarkup + '</div>');
+      }
+      else{
+        for (var i = 0; i < builderData.length; i++) {
+          var blockMarkup = '';
+          blockMarkup = sectionElement(builderData[i].element);
+          $('#dynamic-sections .container-custom-sections').append('<div class="infos section">' + blockMarkup + '</div>');
+        }
+      }
+
+      callBxSlider('.bxslider');
+    // For Timer Sections
+    // for (var i = 1; i < 7; i++) {
+    //   var eTitle     = jsondata.counter['counter' + i].title,
+    //       eSubtitle  = jsondata.counter['counter' + i].subtitle,
+    //       cInfo      = jsondata.counter['counter' + i];
+    //       cBG        = jsondata.counter['counter' + i].background;
+    //
+    //   $('.timer-' + i + ' .title').text(eTitle);
+    //   $('.timer-' + i + ' .event-name').text(eSubtitle);
+    //   $('.timer-' + i).css('background', 'url(' + cBG + ') center');
+    //
+    //   cTime = [cInfo.year, cInfo.month, cInfo.day, cInfo.hour, cInfo.minute];
+    //   if(i == 1) {
+    //     countDownStart('#clock'+i, cTime, 'DailyCounter'); // year, month, day, hour, min
+    //   } else {
+    //     countDownStart('#clock'+i, cTime, 'HourlyCounter'); // year, month, day, hour, min
+    //   }
+    // }
+  });
+
+  /*
+  Menu Accordion JS
+  */
+
+
+
+
+
+  /*$('#menu > ul > li > a').click(function() {
+      $(this).preventDefault;
+      $('#menu ul li ul').addClass('active');
+
+		console.log('inside menu js');
+		var checkElement = $(this).next();
+
+		$('#menu li').removeClass('active');
+		$(this).closest('li').addClass('active');	
+
+		if((checkElement.is('ul')) && (checkElement.is(':visible'))) {
+			$(this).closest('li').removeClass('active');
+			checkElement.slideUp('normal');
+		}
+
+		if((checkElement.is('ul')) && (!checkElement.is(':visible'))) {
+			$('#menu ul ul:visible').slideUp('normal');
+			checkElement.slideDown('normal');
+		}
+
+		if (checkElement.is('ul')) {
+			return false;
+		} else {
+			return true;	
+		}
+	});*/
+})
+
+}) (jQuery);

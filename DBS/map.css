@@ -1,0 +1,1025 @@
+
+
+
+#map-overlay{
+  position: relative;
+  margin: auto;
+  margin-top: 20px;
+  width: 970px;
+  max-width: 100%;
+  background-color: white;
+  background-repeat: no-repeat;
+  background-position: left;
+  
+  
+}
+#map-overlay .map-marker {
+  display: none;
+}
+#map-overlay.hk{
+  
+}
+#map-overlay.hkZH{
+  
+}
+#map-canvas{
+  height: 500px !important;
+  padding: 0;
+  margin: 0;  
+  
+  width: 624px;
+  max-width: 100%;
+}
+#map-panel{
+  position: absolute;
+  top: 0;
+  left: 624px;
+  width: 306px;
+  
+  
+  z-index: 1;
+  
+}
+body.notdestop {
+  overflow-x: hidden;
+}
+.notdestop #map-panel,
+body.sg.notdestop #map-panel{
+  position: inherit;
+  left: 0;
+  top: 10px;
+  margin-bottom: 20px;
+}
+.notdestop #selectBranchList,
+body.sg.notdestop #selectBranchList{
+  width: 292px;
+  padding-left: 5px;
+}
+.notdestop .feature-filter,
+body.sg.notdestop .feature-filter{
+  margin-left: 0;
+}
+.notdestop .store-list{
+  
+}
+.notdestop #selectBranchList .list-title,
+.notdestop #selectBranchList .list-item,
+body.sg.notdestop #selectBranchList .list-title,
+body.sg.notdestop #selectBranchList .list-item
+{
+  float: none;
+  
+  overflow: hidden;
+}
+.notdestop #infowindow,
+body.sg.notdestop #infowindow{
+  max-height: 300px;
+  overflow: auto;
+  max-width: none;
+}
+body.sg.notdestop .within5km,
+.notdestop .within5km{
+  
+  padding: 10px;
+  padding-left: 20px;
+}
+body.sg.notdestop #listNavBar,
+.notdestop #listNavBar{
+  margin-left: 0;
+}
+body.sg.notdestop #map-overlay,
+.notdestop #map-overlay{
+  
+}
+
+.feature-filter{
+  -webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+  z-index: 7;
+  margin: 10px;
+  margin-left: 20px;
+  width: 310px;
+  margin-top: 0;
+}
+
+.geocodeInputContianer{
+  position: relative;
+  width: 300px;
+  height: 32px;
+  margin-top: 10px;
+  z-index: 9;
+}
+.selectBranchContianer{
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  position: relative;
+  z-index: 10;
+  
+  
+}
+#geocodeInput,#selectBranch{
+  padding-left:5px !important;
+  margin: 0;
+  -webkit-border-radius:0;
+  -moz-border-radius:0;
+  border-radius:0;
+  background: #fff;
+  color:#999494;
+  border:1px solid #CCC;
+  outline:none;
+  display: inline-block;
+  -webkit-appearance:none;
+  -moz-appearance:none;
+  appearance:none;
+  
+  height: 32px;
+  line-height: 32px;
+  font-size: 14px;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  
+}
+
+#selectBranch{
+  width: 249px;
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAgCAYAAABgrToAAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAKwwAACsMBNCkkqwAAAB50RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNS4xqx9I6wAAAQxJREFUWIXt1zFKA0EUh/EfCoIgeBWLxUIUi1RBsAuCtSjeIJ5ATyAoWKYStBQExcJK5iypUgWCFjtCECWyb9Ug81U7/3ns+9iZ3WWklF7NMQt/LTCLIhilCEYpglGKYJT/K5g4/cn6dyJPsJ84n1WUWExcoN+kSXSJjxODxNJnkzkf4LBpgzb24D6uE8vTYR7fYC9y84jgydT1Lu4SK5BYxT12vqj/No0FK85wgEmOtvGQ6uV8wmbOJzhS1/+eYJa8Qg/jHK2rX4i1PB6jV3HZtEd4D1bcoovRh6kRunm+Ma18qCse0cEwR0N0ch6itT9JxQs28IytPI5TDk1BimCUIhilCEYpglHmXvANPf0zR9GPn3oAAAAASUVORK5CYII=);
+  background-position: right;
+  background-repeat: no-repeat;
+  padding-right: 40px !important;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+
+}
+.selectBranchContianer.show #selectBranch{
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAgCAYAAABgrToAAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAKwwAACsMBNCkkqwAAAB50RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNS4xqx9I6wAAASJJREFUWIXt180qRVEUwPHf8TWQgbyEieFOykQoGSIjZgYGnsADkDeQGEvMJEZ34CMDd/MuoojBMbhHSYrOvl3K/k92Z6111vrXXnU6YoylP0zXbwt8RxZMJQumkgVTyYKp/C/ByEjkKjL8OVeW9b6obROMjOES47iOjLajb7JgkyIyjQYGq/AQGpHJ1P5Jgk2Kgnmcor8Kv9/lAM4icykzagtWcqs4RG8VvtOK3VTPfTiKrNwWRWcFC9axXfUocYGJwC6mcF6VdmNPq75zgtiozhInmAk8QOARszj+UL/ZacF3uQMsBJ4/JgJPWMR+yoBUwR0sB16/SgZeAktaq1CLnrovYiv8cK9K1grua03JP02JZMFUsmAqWTCVLJjKnxd8AyalOr/vyH3PAAAAAElFTkSuQmCC);
+
+}
+
+#geocodeInput{
+ 
+  background: white;
+  border-right: 0;
+  padding-right: 5px;
+}
+.ie7 a.geocodesearch{
+  top: 1px;
+}
+a.geocodesearch{
+  display: inline-block;
+  width: 30px;
+  height: 32px;
+  border: 1px solid #ccc;
+  background-repeat: no-repeat;
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAAB50RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNS4xqx9I6wAAAbxJREFUKJGFkkFLG2EQhp+4cTFtaukH23rKraQIOXkSPOXgMSDkIIrg1VPEk/6CHLzov1CQiD9BEAPLpkqWgqUYag8h2Bq6ZJNtdDfTw8bVbSJ94YNvZpiZ932ZhIgIQ/iOw+/jY3qXlwSeR2p2ljf5PK9zOcZChrirVOSzYYgFsWdqmtxsbYnf68m/SIiI3B0e8n15ORo4NTdHUim6tRrSbgMwvbTEx0olvrl/eys1pcQCqWez4tbr0eSHTkeu19cjFr8ODmKbaZbLYVHXxbu6GqE28H35Mj8vFoidy8VqE65pApDO55nKZkc8SWgaHzY2Qpa2TeB5UW0icBwAJmdmxjsKJA0j+geu+9SsZzIAdKtVJAjGNrvVashCKfRng2ifnESGNMvlEc3diwux0mmxQK7X1mK15LtCgVcLC/TOzmju7OCaJmplhUml6Jye0trdhaHORCoV90NE5KHV4uviIn3bflH3I4xSiczeXqj50axP5+e8395Ge26crvO2WGS6UIhSP/f3+bG5GQYjIkXkT6MhrmVFcdDvy7diMXa2N6VSeJ7/5QoM7u9prK7iHB09JcdtfgkD348x+AuWqosJC43ZygAAAABJRU5ErkJggg==);
+  background-position: center;
+  position: absolute;
+  top: 0;
+  left: 255px;
+}
+.store-list{
+  
+  
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  margin-left: 20px !important;
+  margin-bottom: 23px;
+  overflow: auto;
+  padding: 0;
+  
+  width: 100%; 
+   
+  height:350px;
+  max-height: 350px; 
+  overflow-x: hidden !important;
+  
+  
+  z-index: 2;
+  display: none;
+}
+.store-list::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
+
+.store-list::-webkit-scrollbar:vertical {
+    width: 11px;
+}
+
+.store-list::-webkit-scrollbar:horizontal {
+    height: 11px;
+}
+
+.store-list::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    border: 2px solid white; 
+    background-color: rgba(0, 0, 0, .5);
+}
+#map-panel li.store{
+  list-style-type: none;
+  margin-bottom: 1px;
+  padding: 5px 5px 5px 50px;
+  position: relative;
+  background-position: 5px -5px;
+  
+  background-repeat: no-repeat;
+  
+  margin-left: 0px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  z-index: 3;
+}
+#map-panel li.store:hover{
+  background-color: #F4F0EA;
+}
+
+#map-panel li.store.selected{
+  background-color: #CCC6C6;
+}
+#map-panel li.store.type-DBS{background-image: url("markers/DBS.png");}
+#map-panel li.store.type-POSB{background-image: url("markers/POSB.png");}
+#map-panel li.store.type-ATM{background-image: url("markers/ATM.png");}
+#map-panel li.store.type-SingPost{background-image: url("markers/SingPost.png");}
+#map-panel li.store.type-EBC{background-image: url("markers/EBC.png");}
+#map-panel li.store.type-EBB{background-image: url("markers/EBB.png");}
+#map-panel li.store.type-SDB{background-image: url("markers/SDB.png");}
+#map-panel li.store.type-treasures{background-image: url("markers/treasures.png");}
+#map-panel li.store.type-CAM{background-image: url("markers/CAM.png");}
+#map-panel li.store.type-AXS{background-image: url("markers/AXS.png");}
+#map-panel li.store.type-CDM{background-image: url("markers/CDM.png");}
+#map-panel li.store.type-QCM{background-image: url("markers/QCM.png");}
+
+.store-list .title,#map-canvas .store .title{
+  font-weight: bold;
+}
+.markerNum{ 
+  display: none;
+}
+#map-canvas .store{
+  
+}
+#map-canvas .store .title{
+  font-size: 14px;
+  font-weight: 700;
+}
+#map-canvas .store .address{
+  display:inline-block;
+}
+#listNavBar{ 
+  z-index: 11;
+  height: 34px;
+  
+  padding: 0;
+  margin: 0;
+  margin-left: 20px;
+  background: none;
+  text-align:left;
+  
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+#listNavBar > div{
+  
+  display: inline-block;
+  border: 1px solid #ddd;
+  
+  padding: 0;
+  line-height: 32px;
+  height: 32px;
+  text-decoration: none;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-left-width: 0;
+  border-top: 1px solid #ddd;
+  vertical-align: top;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: none;
+  max-width: 38px;
+  width: 38px;
+  color: #ccc;
+  font-size: 14px;
+  font-weight: bold;
+  
+  text-align: center;
+  cursor: pointer;
+}
+#listNavBar > div.selected{
+  
+  background-color: #f5f5f5;
+  color: #7d0000;
+  text-decoration: none;
+  cursor: pointer;
+}
+#listNavBar > div.hide{
+  display: none;
+}
+#listNavBar > div.prev{
+  border-left-width: 1px;
+  -webkit-border-radius: 3px 0 0 3px;
+  -moz-border-radius: 3px 0 0 3px;
+  border-radius: 3px 0 0 3px;
+}
+#listNavBar > div.prev{
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAANCAYAAACQN/8FAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAAB50RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNS4xqx9I6wAAASlJREFUKJFt0G0zAnEUxuHfOdsyWElpjCnspMj4/l9Fq40eCIOKkmbY/R8vGg/FeXfPXHPP3Ef45x5u+9br9XDOISLslsroMho8Plmv0wVnKEKxWGR/GY4GQ+tctVCb50KhwGFYARX5hpOXsV3GF7gkxQlkc1uEtSPwVIB543Tyas3oHJzhibGWDajWTxDNyFeRvr9NrRU1sNQBsLoRUD89Q38hAL1oxbwnH5gZIkI+n8fzvAUEoEeVGr7vIyKYGcOnAUmS2B+4HmxI9biO52dwzjGbzYgbES5JF7ACBNlNqVSPyaz4mBnTyZhWM8LsB3+/Z2s7J2GlimZ81OBl9MxVMwacLUCA/E5BDsKQFENVGQ2GXLc74Mz+rAO4v+vbTbuLOMNU2CuV+QT89oRejAft8wAAAABJRU5ErkJggg==);
+}
+#listNavBar > div.next{
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAANCAYAAACQN/8FAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAAB50RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNS4xqx9I6wAAAS9JREFUKJFlkdtOwlAQRdecFu+oIIJivWCMEuP//4hRQ6oFaiMqlFtEE9ue8UGtovttMmsms/fIfTfUx4cIUQCoH+5T39sXvqT62TCe51GtVgEQq/TCiOennvJHrjhGbJppYjOmzzEKhO0Oo+FAS+VKvtkFMK4jWZbpXZIyGY0BCFo+k/FQAQEw3xOO48hxs8naehEHQawStHxmL1Plm/6tNE31+uqS99kbRsEUXM4uzn825re4rtQq26gqViBJEtpB9z9o00zjOM7rwuICjUZjHrRZon7rhteXGV8mOTltsrSyLDmomdXAv2U6niAiYIST0yarxbUf12pT7QS3jOIhxhgsn9D65kZu1qhNNWx3GAwGiAgW5eDoiNJWeS4RE0UR/X4//7XnHVDb3fkX2wdTOYxjiKCISgAAAABJRU5ErkJggg==);
+}
+.action.eapp{
+  font-weight: bold;
+}
+
+
+#selectBranchList {
+font-style: normal;
+font-variant: normal;
+font-weight: normal;
+position: absolute;
+border: 1px solid #ccc;
+padding: 10px 10px 30px 10px;
+background: white;
+overflow: hidden;
+display: none;
+cursor: pointer;
+z-index: 10;
+top: 33px;
+width: 536px;
+z-index: 1000;
+top: 33px;
+
+right: 0;
+}
+
+#menu-scroll {
+  display: block;
+  height: 100%;
+}
+
+#menu-scroll.jspScrollable { outline-style: none; }
+
+#menu-footer {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  display: table-cell;
+}
+
+#selectBranchList .checkbox {
+  padding-left: 10px;
+}
+
+#selectBranchList.single {
+  width: 271px;
+  left: 0px;
+}
+
+
+.group-name {
+font-weight: bold;
+font-size: 14px;
+
+margin: 20px 0px 10px 0px;
+
+color: #000;
+}
+.service-group { width: 50%; display: block; float: left;} 
+#selectBranchList.single .service-group {width: 100%; float: none;}
+
+.selectBranchContianer.show #selectBranchList,#selectBranchList.show
+body.sg .selectBranchContianer.show #selectBranchList,body.sg #selectBranchList.show{
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  display: block;
+}
+body.sg.notdestop .selectBranchContianer.show #selectBranchList,body.sg.notdestop #selectBranchList.show{
+  padding-left: 5px;
+}
+
+#selectBranchList .list-item{
+
+  
+
+
+
+
+}
+
+#selectBranchList .list-item,.list-all{
+  cursor: pointer;
+  padding: 0 4px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color:rgb(40,40,40);
+  display: block;
+  position: relative;
+  padding-left: 25px;
+  line-height: 30px;
+}
+#selectBranchList .list-item > b,.list-all>b{
+  color: #999494;
+}
+#selectBranchList .list-item:hover,.list-all:hover {
+  color: #CC0000;
+  font-weight: bold;
+  text-shadow: 1px 1px 1px #DEDEDE;
+}
+.list-all .checkbox,.list-item .checkbox{
+  position: absolute;
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAAB50RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNS4xqx9I6wAAABR0RVh0Q3JlYXRpb24gVGltZQA3LzUvMTN8lwEiAAAAkklEQVQ4jd2QMQ6DMBAEx465mDegWPz/VcgRZZBCEzgknCoUFEEXUWX7md079xzH0uWMqmKJiNCmROhypk2JOkaT4DVNdDnjVdUMA9Qxoqp4M7nLHwgCQCnlPIFz7iuwLzMvOBRYzznnB+u6Ht6+z6d0W/DrinDxnmmeuYqYwFkVEcE9hqHc+55lWUyCqqq4NQ1vU0RMYYKUAOYAAAAASUVORK5CYII=);
+  left: 0px;
+}
+.list-all.clicked .checkbox,.list-item.clicked .checkbox{
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAAB50RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNS4xqx9I6wAAABR0RVh0Q3JlYXRpb24gVGltZQA3LzUvMTN8lwEiAAABi0lEQVQ4jZWSTUsbURSGnyTDZGYWfoutboIgoQil+9JNN36AIC3uigpK6kJExYUI3XRRVy66KbjrvlBB/4Ii4kKRhjYtxVKoGAmiJebOhMw9LprEGaOFeeHAhfO+zzkcbixfOJfDbI6Scokix7Z40p/GOPjyjXRvCsexIgFKJcVhNkdcuV7kMIDj2JSUSzxy8pYiAy52d/i9+ha0BsCIEi5sbXLy/h1mZzeI3L+B9jx8pe4MA3ROTEMicQMQkXpdfc+RHXnO8coSojUiQv7zp3r4wesF2gaGkOoGRg1Q09+9XUT7lH/9BK0529wg/2Ht3+RXGTpejoX8DYCYaQJQKV5y/GaZ4v42AO1j43SNT4a8dwKkUqk+pB5uGX5B11QGXb18A4AAINHaFjI0D47ycHY+5AkqDuBXjyUiND19htmTAqBjYobuuUVqWwbLD/4DEcGvTUgmSa1/RCtF3LbrxvtkGEYCpTwsyww1YpbVcLCgXLeMbSWJ/Tk9k6OvP3C98n8n3ZaVNHn8qI9r4X7CIQH9MDwAAAAASUVORK5CYII=);
+}
+#selectBranchList .list-item.clicked{
+  
+}
+.list-all{
+
+}
+.list-item img{
+  
+  
+margin: 0 10px 0 15px !important;
+width: 30px;
+height: 30px;  
+}
+
+.service-name {
+ 
+ font-size: 12px;
+ white-space: nowrap;
+ } 
+
+
+#map-panel.onelist #listNavBar{
+  display: none;
+}
+#map-panel.onelist .store-list{
+  
+}
+#map-overlay.static #map-panel{
+  
+
+}
+
+#map-canvas .fax,#map-canvas .phone {
+color: #999494;
+}
+
+
+#map-panel input[type="checkbox"] {
+-webkit-appearance: none;
+background-color: #fafafa;
+border: 1px solid #cacece;
+box-shadow: 0 1px 2px rgba(0,0,0,.05),inset 0 -15px 10px -12px rgba(0,0,0,.05);
+padding: 7px;
+border-radius: 2px;
+display: inline-block;
+position: relative;
+top: 6px;
+left: -2px;
+}
+
+#map-panel input[type="checkbox"]:checked {
+background-color: #e9ecee;
+border: 1px solid #adb8c0;
+color: #c00;
+}
+#map-panel input[type="checkbox"]:checked:after {
+content: '\2714';
+font-size: 12px;
+position: absolute;
+top: 0;
+left: 3px;
+color: #c00;
+}
+
+.within5km{
+  display: none;
+  text-align: center;
+  padding: 5px 0;
+  
+  
+  
+}
+
+#map-canvas a,#map-canvas a:visited,#map-canvas a:hover {
+color: #c00;
+}
+#map-canvas a:hover {
+color: #005580;
+text-decoration: underline;
+}
+#map-canvas a:hover, #map-canvas a:active {
+outline: 0;
+}
+#map-canvas a, #map-canvas a:visited, #map-canvas a:hover {
+color: #c00;
+}
+#map-canvas a {
+text-decoration: none;
+font-size: 14px;
+}
+#map-panel .store{
+font-size: 14px;
+color: #999494;
+}
+#map-panel li .address {
+  margin-left: 0 !important;
+}
+#map-panel .title {
+  font-weight: normal;
+  color: #666363;
+}
+
+
+#listClose,#listClear{
+  display: inline-block;
+  padding: 5px 10px;
+}
+#listClose:hover,#listClear:hover{
+  font-weight: bold;
+  color: #C00;
+}
+#listClear{
+  padding-right: 0px;
+}
+#infowindow{
+  max-width: 360px;
+}
+#map-panel input::-ms-clear {
+    display: none;
+}
+#greenpoi{
+  overflow: hidden;
+  height: 100%;
+  width: auto;
+}
+#greenpoi > div{
+  display: block;
+  width: auto;
+}
+#listNavBar > div:first-child{
+ border-left:1px solid #ccc;
+  border-right: 1px solid #ccc;
+}
+#listNavBar > div:nth-child(2){
+  border-left:1px solid #ccc;
+}
+
+#listNavBar.hadprev > div:first-child{
+  border-right: 1px solid #ccc;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.jspContainer
+{
+    overflow: hidden;
+    position: relative;
+}
+
+.jspPane
+{
+    position: absolute;
+}
+
+.jspVerticalBar
+{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 6px;
+    height: 100%;
+    background: red;
+}
+
+.jspHorizontalBar
+{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    background: red;
+}
+
+.jspVerticalBar *,
+.jspHorizontalBar *
+{
+    margin: 0;
+    padding: 0;
+}
+
+.jspCap
+{
+    display: none;
+}
+
+.jspHorizontalBar .jspCap
+{
+    float: left;
+}
+
+.jspTrack
+{
+    background: white;
+    position: relative;
+}
+
+.jspDrag
+{
+    background: #808080;
+    position: relative;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+}
+
+.jspHorizontalBar .jspTrack,
+.jspHorizontalBar .jspDrag
+{
+    float: left;
+    height: 100%;
+}
+
+.jspArrow
+{
+    background: #50506d;
+    text-indent: -20000px;
+    display: block;
+    cursor: pointer;
+}
+
+.jspArrow.jspDisabled
+{
+    cursor: default;
+    background: #80808d;
+}
+
+.jspVerticalBar .jspArrow
+{
+    height: 8px;
+}
+
+.jspHorizontalBar .jspArrow
+{
+    width: 8px;
+    float: left;
+    height: 100%;
+}
+
+.jspVerticalBar .jspArrow:focus
+{
+    outline: none;
+}
+
+.jspCorner
+{
+    background: #eeeef4;
+    float: left;
+    height: 100%;
+}
+
+
+* html .jspCorner
+{
+    margin: 0 -3px 0 0;
+}
+
+
+
+
+
+
+
+
+
+body.sg #cover {
+        display:block;
+        position:       fixed;
+        left:           0px;
+        top:            0px;
+        width:          100%;
+        height:         100%;
+        filter:         alpha(Opacity = 50);
+        opacity:        0.1;
+        -moz-opacity:   0.5;
+        -khtml-opacity: 0.5;
+    }
+body.sg #map-overlay{
+  position: relative;
+}
+body.sg #map-panel{
+  overflow: visible;
+  z-index: 100;
+}
+body.sg #selectBranchList{
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+
+  position: absolute;
+  border: 1px solid #ccc;
+  padding: 2px;
+  padding-left:15px;
+  background: white;
+  overflow: hidden; 
+  display: none;
+  cursor: pointer;
+  z-index: 10;
+  
+  top: 33px;
+  padding-bottom: 4px;
+  
+  width: 520px;
+  
+  z-index: 1000;
+  top: 33px;
+  left: -204px;
+
+}
+body.sg #selectBranchList .list-item{
+  width: 232px;
+  float: left;
+}
+body.sg #selectBranchList .list-title
+{
+  font-family: "Frutiger",Arial,sans-serif;
+  float:left; 
+  cursor: auto;
+  width: 232px;
+  vertical-align:text-bottom;
+  line-height: 35px;
+ 
+  }
+body.sg #selectBranchList .list-blank{
+  width: 200px;
+  float: right;
+}
+
+
+
+
+
+.jspContainer
+{
+    overflow: hidden;
+    position: relative;
+}
+
+.jspPane
+{
+    position: absolute;
+}
+
+.jspVerticalBar
+{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 6px;
+    height: 100%;
+    background: none;
+}
+
+.jspHorizontalBar
+{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    background: none;
+}
+
+.jspVerticalBar *,
+.jspHorizontalBar *
+{
+    margin: 0;
+    padding: 0;
+}
+
+.jspCap
+{
+    display: none;
+}
+
+.jspHorizontalBar .jspCap
+{
+    float: left;
+}
+
+.jspTrack
+{
+    background: white;
+    position: relative;
+}
+
+.jspDrag
+{
+    background: #808080;
+    position: relative;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+}
+
+.jspHorizontalBar .jspTrack,
+.jspHorizontalBar .jspDrag
+{
+    float: left;
+    height: 100%;
+}
+
+.jspArrow
+{
+    background: #50506d;
+    text-indent: -20000px;
+    display: block;
+    cursor: pointer;
+}
+
+.jspArrow.jspDisabled
+{
+    cursor: default;
+    background: #80808d;
+}
+
+.jspVerticalBar .jspArrow
+{
+    height: 8px;
+}
+
+.jspHorizontalBar .jspArrow
+{
+    width: 8px;
+    float: left;
+    height: 100%;
+}
+
+.jspVerticalBar .jspArrow:focus
+{
+    outline: none;
+}
+
+.jspCorner
+{
+    background: #eeeef4;
+    float: left;
+    height: 100%;
+}
+
+
+* html .jspCorner
+{
+    margin: 0 -3px 0 0;
+}
+
+
+.notdestop .branch-finder #map-canvas {margin-bottom: 0;}
+.notdestop .store-list {margin: 0 !important; }
+.notdestop #selectBranchList {overflow-x: hidden; overflow-y: hidden; padding: 10px 10px 30px 10px;}
+.notdestop .service-group {width: 100% !important; float: none;}
+.notdestop #selectBranchList .group-name {margin: 10px 20px 5px 10px!important;}
+
+
+
+
+
+
+
+
+
+
+.branch-finder #google-maps-version-2 #map-overlay #map-canvas{ height: 450px !important; }
+.branch-finder #google-maps-version-2 #map-overlay #map-panel li.store{ padding: 5px 5px 5px 25px; }
+.branch-finder #google-maps-version-2 #map-overlay .store-list.jspScrollable { height:343px !important; max-height: 343px !important; margin-bottom: 23px !important; margin-top: 20px !important;}
+.branch-finder #google-maps-version-2 a.geocodesearch { left: 254px; }
+
+
+
+.branch-finder #map-overlay { background-position: -13px -1px !important; margin-bottom: 20px !important; }
+.branch-finder #map-overlay #map-canvas { border: 1px solid #CCC6C6 !important; }
+.branch-finder #map-overlay #map-panel { width: 295px; }
+.branch-finder #map-overlay .store-list.jspScrollable { outline-style: none; }
+.branch-finder #map-overlay .store-list.jspScrollable { height: 350px; max-height: 350px; margin-bottom: 22px; }
+.branch-finder #map-overlay #geocodeInput {padding-right: 5px !important; }
+.branch-finder #map-overlay a.geocodesearch { left: 255px; }
+.pac-container { box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3) !important; border: 1px solid #CCC6C6 !important; }
+
+
+
+
+
+
+
+.branch-finder #map-overlay.portrait-mode.locator-page { height: 100%; margin-bottom: 30px; }
+.branch-finder #map-overlay.portrait-mode.locator-page #selectBranchList { padding: 10px 10px 30px 10px !important; }
+
+
+
+.branch-finder #map-overlay.portrait-mode #map-panel { left: 0; padding-right: 0; width: 100% !important; }
+.branch-finder #map-overlay.portrait-mode #map-panel .feature-filter { margin-left: 0 !important; }
+.branch-finder #map-overlay.portrait-mode #map-panel .feature-filter .geocodeInputContianer { width: 100%; white-space: nowrap; }
+.branch-finder #map-overlay.portrait-mode #map-panel .feature-filter .geocodeInputContianer #geocodeInput { float: left; }
+.branch-finder #map-overlay.portrait-mode #map-panel .feature-filter  .geocodeInputContianer .geocodesearch { float: left; position: static; }
+.branch-finder #map-overlay.portrait-mode #map-panel .store-list { margin-left: 0 !important; }
+.branch-finder #google-maps-version-2 #map-overlay.portrait-mode .store-list.jspScrollable, .branch-finder #map-overlay.portrait-mode .store-list.jspScrollable { margin-bottom: 10px !important; margin-top: 10px !important; }
+
+
+@media(max-width: 420px) {
+  .branch-finder #google-maps-version-2 #map-overlay.portrait-mode #map-canvas, .branch-finder #map-overlay #map-canvas { height: 300px !important; }
+  .branch-finder p { width: 100% !important; }
+  
+  
+  .branch-finder #map-overlay.portrait-mode .list-item img { margin: 0 5px 0 0 !important; }
+  .branch-finder #map-overlay.portrait-mode .checkbox { padding-left: 0px; }
+}
+
+
+
+
+.branch-finder #map-overlay.landscape-mode { display: table; width: 100%; white-space: nowrap; }
+.branch-finder #map-overlay.landscape-mode #map-canvas { float: left; }
+.branch-finder #map-overlay.landscape-mode #map-panel { position: static; float: left; }
+.branch-finder #map-overlay.landscape-mode  #map-panel .geocodeInputContianer { width: 100% }
+.branch-finder #map-overlay.landscape-mode #map-panel .store-list { white-space: normal; }
+.branch-finder #map-overlay.landscape-mode.locator-page .geocodeInputContianer .geocodesearch { position: static; }
+
+
+@media(max-height: 360px) {
+  .branch-finder #google-maps-version-2 #map-overlay.landscape-mode #map-canvas{ height: 300px !important; }
+  .branch-finder #google-maps-version-2 #map-overlay.landscape-mode #map-panel .store-list, .branch-finder #map-overlay #map-panel .store-list { height: 206px !important; }
+  .branch-finder #google-maps-version-2 #map-overlay.landscape-mode #map-panel .store-list.jspScrollable { margin-bottom: 15px !important; margin-top: 15px !important; }
+  .branch-finder #map-overlay.landscape-mode #map-canvas { height: 334px !important; }
+  .branch-finder #map-overlay.landscape-mode.locator-page #map-panel .store-list { margin-bottom: 10px !important; margin-top: 10px !important; }
+  .branch-finder p { width: 100% !important; }
+  .branch-finder #map-overlay.landscape-mode .list-item img { margin: 0 5px 0 0 !important; }
+  .branch-finder #map-overlay.landscape-mode .checkbox { padding-left: 0px; }
+}
+
+
+
+.branch-finder #map-panel .feature-filter, global-branch-finder #map-panel .feature-filter{display:block;}
+.store-list{  margin-left: 10px !important;}
+.feature-filter{ margin-left: 10px !important;}
+
+
+.posb a.geocodesearch{background-image:url(/iwov-resources/images/posb_search_icon.png);}
+
+#map-panel .customDropdown {
+  width: 99.5% !important;
+}
+#countryselect{width:105%;}
+.lt-ie9  #countryselect{width:105%;}
+.posb #listNavBar > div.selected{
+	color:#007DCB;
+}
+
+
+.gm-style-iw > div {
+    -webkit-overflow-scrolling: touch;
+}
+.jspContainer,.jspPane,.jspPane > li {-webkit-overflow-scrolling: touch;}
+
+
+.branch-finder #map-overlay .selectBranchContianer + .geocodeInputContianer a.geocodesearch { left: 256px !important;width: 39px;
+}
+
+.posb #selectBranch{background-image: url(/iwov-resources/images/posb_selectbranch.png);}
+.branch-finder #map-overlay #geocodeInput {
+  width: 245px;
+}

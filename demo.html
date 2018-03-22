@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+	<title></title>
+</head>
+<body>
+
+<h1>Hey Welcome</h1>
+
+<h2>Hello!</h2>
+
+ <button id="go" class="btn btn-primary">Co-browse Only Mode</button>
+
+        <h3 id="short-code"></h3>
+
+        <!-- The button to end an Assist Session will only be visible while assist is active -->
+        <button id="end" class="btn btn-primary">End support</button>
+
+</body>
+
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.2.4.js"></script>
+
+  <script type="text/javascript" src="http://192.168.4.13:8080/assistserver/sdk/web/consumer/assist.js"></script>
+
+  <script>
+$(document).ready(function(){
+    $("h1").mouseover(function(){
+        $("h2").show();
+    });
+    $("h1").mouseout(function(){
+        $("h2").hide();
+    });
+});
+</script>
+
+<script>
+
+"use strict";
+    // document.getElementById('collabDoc').addEventListener('change', function readSingleFile(evt) {
+    //     var f = evt.target.files[0];
+    //     window.AssistSDK.shareDocument(f);
+    // }, false);
+
+    // cache the UI elements that we will be interacting with
+    var $endButton = $('#end');
+    var $codeDisplay = $('#short-code');
+
+    // when the support button is clicked...
+    $('#go').click(function(event) {
+        event.preventDefault();
+        alert();
+        // Retrieve a short code
+        $.ajax('http://192.168.4.13:8443/assistserver/shortcode/create', {
+                method: 'put',
+                dataType: 'json'
+            })
+            .done(function(response) {
+
+                // Retrieve session configuration (session token, CID etc.)
+                $.get('http://192.168.4.13:8443/assistserver/shortcode/consumer', {
+                    appkey: response.shortCode
+                }, function(config) {
+
+                    // translate the config retrieved from the server, into
+                    // parameters expected by AssistSDK
+                    var params = {
+                        cobrowseOnly: true,
+                        correlationId: config.cid,
+                        scaleFactor: config.scaleFactor,
+                        sessionToken: config['session-token']
+                    };
+
+                    // start the support session
+                    AssistSDK.startSupport(params);
+
+                    // display the code for the consumer to read to the agent
+                    $codeDisplay.text(response.shortCode);
+                }, 'json');
+            });
+    });
+
+    // configure Assist to automatically approve share requests
+    AssistSDK.onScreenshareRequest = function() {
+        return true;
+    };
+
+    // the $endSupport button will be hidden
+    // $endButton.hide().css('display', 'inline');
+
+    // when screenshare is active, toggle the visibility of the 'end' button
+    AssistSDK.onInSupport = function() {
+        $endButton.show();
+    };
+
+    AssistSDK.onEndSupport = function() {
+        $endButton.hide();
+        $codeDisplay.text('');
+    };
+
+    $endButton.click(function() {
+        AssistSDK.endSupport();
+    });
+
+    $endButton.click(function() {
+        AssistSDK.onEndSupport();
+    });
+
+    AssistSDK.onEndSupport = function() {
+        console.log("Live Assist session ended");
+    };
+</script>
+
+<script type="text/javascript">
+  $(function(){
+    $(this).bind("contextmenu", function(e){
+      e.preventDefault();
+    });
+  });
+</script>
+
+</html>
